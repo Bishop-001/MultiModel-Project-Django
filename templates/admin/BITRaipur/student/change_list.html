@@ -1,0 +1,44 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+{% block content %}
+<a href="datasets/" class="addlink">Show Data</a>
+{#    <a href="new-database/" class="addlink">Add Database</a>#}
+<div class="content-main">
+    <ul class="object-tools">
+        <li>
+            <a href="new-database/" class="addlink">Add Database</a>
+        </li>
+    </ul>
+</div>
+{{ block.super }}
+{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script>
+        function fetchData(type) {
+            fetch(`/admin/BITRaipur/student/fetch_data/?type=${type}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('fetchBitStudents').addEventListener('click', function() {
+                fetchData('bit_students');
+            });
+
+            document.getElementById('fetchNitStudents').addEventListener('click', function() {
+                fetchData('nit_students');
+            });
+            
+        });
+    </script>
+{% endblock %}
+{% block object-tools %}
+    {{ block.super }}
+    <button id="fetchBitStudents">Fetch BIT Students</button>
+    <button id="fetchNitStudents">Fetch NIT Students</button>
+{% endblock %}

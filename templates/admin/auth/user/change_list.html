@@ -1,0 +1,14 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+{% block content %}
+<button>Datasets</button>
+<a href="admin/auth/user/datasets" class="addlink">Show Data</a>
+<div class="content-main">
+    <ul class="object-tools">
+        <li>
+            <a href="admin/auth/user/data" class="addlink">Show Data</a>
+        </li>
+    </ul>
+</div>
+{{ block.super }}
+{% endblock %}

@@ -1,0 +1,28 @@
+{
+    "databases": [
+        {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": "college_db_346cd5f9",
+            "USER": "root",
+            "PASSWORD": "1234",
+            "HOST": "localhost",
+            "PORT": "3306"
+        },
+        {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": "college_db_e7a0bf88",
+            "USER": "root",
+            "PASSWORD": "1234",
+            "HOST": "localhost",
+            "PORT": "3306"
+        },
+        {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": "college_db",
+            "USER": "root",
+            "PASSWORD": "1234",
+            "HOST": "localhost",
+            "PORT": "3306"
+        }
+    ]
+}

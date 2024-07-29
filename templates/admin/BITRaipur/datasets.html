@@ -1,0 +1,78 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% block content %}
+<h1>Datasets</h1>
+<form method="post" action="{% url 'admin:datasets' %}">
+    {% csrf_token %}
+    <label for="college_select">Select College:</label>
+<!--    iterates over bit_colleges and nit_colleges to add options to the dropdown.-->
+<!--    selected attribute is set conditionally based on whether a college is already selected.-->
+    <select name="college" id="college_select">
+        <option value="">-- Select College --</option>
+        {% for college in bit_colleges %}
+        <option value="bit_{{ college.id }}" {% if college_selected and college_selected.id == college.id and college_selected.state.db == 'college1' %}selected{% endif %}>{{ college.name }} (BITRaipur)</option>
+        {% endfor %}
+        {% for college in nit_colleges %}
+        <option value="nit_{{ college.id }}" {% if college_selected and college_selected.id == college.id and college_selected.state.db == 'college2' %}selected{% endif %}>{{ college.name }} (NITRaipur)</option>
+        {% endfor %}
+    </select>
+
+    <label for="department_select">Select Department:</label>
+    <select name="department" id="department_select">
+        <option value="">-- Select Department --</option>
+        {% for department in departments %}
+        <option value="{{ department.id }}" {% if department_selected and department_selected.id == department.id %}selected{% endif %}>{{ department.name }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Submit</button>
+</form>
+
+{% if students %}
+<h2>Students</h2>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Gender</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for student in students %}
+    <tr>
+        <td>{{ student.id }}</td>
+        <td>{{ student.first_name }}</td>
+        <td>{{ student.last_name }}</td>
+        <td>{{ student.gender }}</td>
+        <td>{{ student.email }}</td>
+        <td>{{ student.phone_number }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+<script>
+    document.getElementById('college_select').addEventListener('change', function() {
+        const collegeId = this.value;
+        const data_req = new XMLHttpRequest();
+        data_req.open('GET', '{% url "admin:fetch_departments" %}?college_id=' + collegeId, true);
+        data_req.onreadystatechange = function() {
+            if (data_req.readyState == 4 && data_req.status == 200) {
+                const departments = JSON.parse(data_req.responseText);
+                const departmentSelect = document.getElementById('department_select');
+                departmentSelect.innerHTML = '<option value="">-- Select Department --</option>';
+                departments.forEach(function(department) {
+                    const option = document.createElement('option');
+                    option.value = department.id;
+                    option.text = department.name;
+                    departmentSelect.appendChild(option);
+                });
+            }
+        };
+        data_req.send();
+    });
+</script>
+{% endblock %}
